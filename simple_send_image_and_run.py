@@ -45,9 +45,14 @@ def start_run_n_times(fpga_link: FpgaLink, n: int):
     fpga_link.send_bytes_to_m3([n_low])
     fpga_link.send_bytes_to_m3([n_high])
     print("Sent run command to FPGA for {} times".format(n))
+    s = time.time()
     await_ack(fpga_link, "k")
-    print("Run command acknowledged by FPGA")
+    de = time.time() - s
+    print("Run command acknowledged by FPGA after {:.3f} milliseconds".format(de * 1000))
+    s = time.time()
     await_ack(fpga_link, "d")
+    de = time.time() - s
+    print("Run complete acknowledged by FPGA after {:.3f} milliseconds".format(de * 1000))
     # get the next char
     result = None
     while result is None:
@@ -75,8 +80,8 @@ if __name__ == "__main__":
     send_image_array(ALL_MAX_IMAGE, fpga_link)
 
     time.sleep(1)  # Wait for a second before starting the run
-
-    start_run_n_times(fpga_link, 1000)
+    for i in range(15):
+        start_run_n_times(fpga_link, 1)
 
     print("Disconnecting from FPGA")
 

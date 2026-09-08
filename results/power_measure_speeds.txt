@@ -1,0 +1,12 @@
+Measured power 1000 times in 24.85 seconds.
+Speed of one power measurement: 24.854480 milliseconds.
+Average power: 0.26480 W
+
+---
+
+Measured power 1000 times with switching in 141.57 seconds.
+Speed of one power measurement with switching: 141.568542 milliseconds.
+Average power: 0.26482 W
+
+---
+

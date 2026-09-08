@@ -48,6 +48,8 @@ POST_ID_MILESTONES = [
 # Amount of delay before first messages are sent
 DEFAULT_SETTLE_DELAY = 3.0
 
+SAFETY_SWITCH_DELAY = 0.0005  # Delay after switching to M3 before sending the first byte
+
 # ---- Identificaion Block-Block ----
 _ID_BLOB_B64 = (
     "RzRNLURlc2lnbmVyICAgICAgICAgICAgRpINCQAEAAAAAAAABc8xgA////8PqgAAAAFsygIGAAUABAAA////D6oAAAABbMoCBgAF"
@@ -291,7 +293,7 @@ class FpgaLink:
         est_watt = POWER_SCALE * raw16
         return est_watt
 
-    def _switch_to_pic(self):
+    def _switch_to_pic(self, NO_DELAY=False):
         if self._state == STATE_PIC:
             return True
         if self._state == STATE_DISCONNECTED:
@@ -306,7 +308,8 @@ class FpgaLink:
                 self.m3_rx_queue.append(byte)
             logger.debug("Switching from M3 to PIC ...")
             self.send_bytes_raw(bytes(SWITCH_PIC_CMD))
-            time.sleep(0.1)
+            if not NO_DELAY:
+                time.sleep(SAFETY_SWITCH_DELAY*2)
             self._state = STATE_PIC
             logger.debug("Switched to PIC.")
             return True
@@ -331,6 +334,7 @@ class FpgaLink:
                     continue
                 if byte == SWITCH_M3_CMD:
                     break
+            time.sleep(SAFETY_SWITCH_DELAY)
             self._state = STATE_M3
             logger.debug("Switched to M3.")
             return True

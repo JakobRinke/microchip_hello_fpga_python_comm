@@ -59,7 +59,7 @@ def load_all_images_from_directory(directory_path):
             image_arrays.append(img_array)
     return image_arrays
 
-def search_and_connect_to_fpga():
+def search_and_connect_to_fpga(m3=True):
     port = find_mcp2221_port()
     if port is None:
         raise Exception("No MCP2221 device found")
@@ -68,10 +68,11 @@ def search_and_connect_to_fpga():
     print("Connecting to FPGA...")
     fpga_link.connect()
     print("Connected to FPGA")
-    print("Waiting for M3 start sequence...")
-    for expected_ack in START_SEQUENCE:
-        await_ack(fpga_link, expected_ack)
-    print("M3 start sequence received")
+    if m3:
+        print("Waiting for M3 start sequence...")
+        for expected_ack in START_SEQUENCE:
+            await_ack(fpga_link, expected_ack)
+        print("M3 start sequence received")
     return fpga_link
 
 def await_ack(fpga_link: FpgaLink, expected_ack: str, silently=False):

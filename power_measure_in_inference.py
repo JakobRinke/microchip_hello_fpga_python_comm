@@ -9,10 +9,12 @@ from measure_pipeline import search_and_connect_to_fpga, start_run_n_times, imgs
 
 
 NUM_OF_CHECKS_PER_IMG = 20
-NUM_OF_MEAS_PER_INFERENCE = 25
+#NUM_OF_MEAS_PER_INFERENCE = 60
+NUM_OF_MEAS_PER_INFERENCE = 20
 MAX_RANDOM_START_DELAY = 0.028 # 28 ms 
 OUTPUT_FILE = "in_inference_power_25hz.json"
 CONST_SWITCH_DELAY = 0.01 # 10ms, no more so all inference power measures are in sync
+NUM_INFERENCES = 1
 
 def measure_power_by_time_with_random_delay(fpga_link: FpgaLink, n: int, max_random_delay: float = MAX_RANDOM_START_DELAY):
     power_measurements = {}
@@ -37,11 +39,12 @@ def measure_power_for_image(fpga_link: FpgaLink, image_array, n_runs, max_random
     power_mes = {}
     # clear the fpga buffer before starting the measurements
     for _ in range(n_runs):
-        start_run_n_times(fpga_link, 1, do_await_ack=False)
+        start_run_n_times(fpga_link, NUM_INFERENCES, do_await_ack=False)
         power_mes.update(measure_power_by_time_with_random_delay(fpga_link, NUM_OF_MEAS_PER_INFERENCE, max_random_delay))
         await_ack(fpga_link, GOT_RUN_CMD_ACK)
         await_ack(fpga_link, RUN_COMPLETE_ACK)
-        fpga_link.read_next_byte_from_m3() # get the result, don't care about it, just to clear the buffer
+        time.sleep(0.1) 
+        fpga_link.read_next_byte_from_m3() # get the result, don't care about it, just to clear the buffer    
         time.sleep(0.2) # Wait a bit before the next run to avoid overlapping measurements
     # order dict by timestamp
     power_mes = dict(sorted(power_mes.items()))

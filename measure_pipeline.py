@@ -19,7 +19,7 @@ GOT_RUN_CMD_ACK = "k"
 RUN_COMPLETE_ACK = "d"
 
 
-TEST_IDLE_NUM = 100
+TEST_IDLE_NUM = 10000
 TEST_RUN_NUM = 1000
 
 output_file = "power_measurements.json"

@@ -9,18 +9,19 @@ from measure_pipeline import search_and_connect_to_fpga, start_run_n_times, imgs
 
 
 NUM_OF_CHECKS_PER_IMG = 20
-#NUM_OF_MEAS_PER_INFERENCE = 60
-NUM_OF_MEAS_PER_INFERENCE = 20
-MAX_RANDOM_START_DELAY = 0.028 # 28 ms 
+
+NUM_OF_MEAS_PER_INFERENCE = 80
+
+MAX_RANDOM_START_DELAY = 0.028 
 OUTPUT_FILE = "in_inference_power_25hz.json"
-CONST_SWITCH_DELAY = 0.01 # 10ms, no more so all inference power measures are in sync
-NUM_INFERENCES = 1
+CONST_SWITCH_DELAY = 0.2
+NUM_INFERENCES = 40
 
 def measure_power_by_time_with_random_delay(fpga_link: FpgaLink, n: int, max_random_delay: float = MAX_RANDOM_START_DELAY):
     power_measurements = {}
     # Manual Switch (unsafe, but we need the speed)
     bt = time.time()
-    fpga_link._switch_to_pic() # this takes 50 ms, we assume that the FPGA waits at least 50 ms to let us switch
+    fpga_link._switch_to_pic()
     switch_delay = time.time() - bt
     time.sleep(CONST_SWITCH_DELAY - switch_delay) # Wait a bit to make sure the FPGA is in inference mode
     start_time = time.time()

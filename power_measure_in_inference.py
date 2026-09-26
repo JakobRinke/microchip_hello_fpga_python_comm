@@ -19,13 +19,12 @@ NUM_INFERENCES = 40
 
 def measure_power_by_time_with_random_delay(fpga_link: FpgaLink, n: int, max_random_delay: float = MAX_RANDOM_START_DELAY):
     power_measurements = {}
-    # Manual Switch (unsafe, but we need the speed)
     bt = time.time()
     fpga_link._switch_to_pic()
     switch_delay = time.time() - bt
     time.sleep(CONST_SWITCH_DELAY - switch_delay) # Wait a bit to make sure the FPGA is in inference mode
     start_time = time.time()
-    time.sleep(random.uniform(0, max_random_delay)) # Random delay to avoid synchronization with the FPGA
+    time.sleep(random.uniform(0, max_random_delay)) # Random delay to avoid synchronization with the FPGA (oversampling)
     for _ in range(n):
         mes_s = time.time()
         power = fpga_link.get_current_power()

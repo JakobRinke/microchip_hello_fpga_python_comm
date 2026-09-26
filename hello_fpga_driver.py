@@ -15,7 +15,7 @@ except ImportError:
 logging.basicConfig(level=logging.WARNING)
 logger = logging.getLogger(__name__)
 
-# ---- MCP2221 Identifikation ----
+# ---- MCP2221 Identification ----
 MCP2221_VID = 0x04D8
 MCP2221_PID = 0x00DD
 
@@ -34,7 +34,7 @@ POWER_SCALE = 0.00011724
 RAW_FLUSH_IDLE = 0.08
 RAW_FLUSH_MAXLEN = 64
 
-# ---- Boot-/DirectC-Meilensteine after identification ----
+# ---- Boot-/DirectC-Milestones after identification ----
 POST_ID_MILESTONES = [
     b"ActID",
     b"FPGA Array is programmed and enabled",

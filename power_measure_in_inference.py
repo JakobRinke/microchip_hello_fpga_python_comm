@@ -15,7 +15,7 @@ NUM_OF_MEAS_PER_INFERENCE = 80
 MAX_RANDOM_START_DELAY = 0.028 
 OUTPUT_FILE = "in_inference_power_25hz.json"
 CONST_SWITCH_DELAY = 0.2
-NUM_INFERENCES = 40
+NUM_INFERENCES = 1000
 
 def measure_power_by_time_with_random_delay(fpga_link: FpgaLink, n: int, max_random_delay: float = MAX_RANDOM_START_DELAY):
     power_measurements = {}

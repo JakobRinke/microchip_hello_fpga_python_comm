@@ -1,3 +1,5 @@
 pyserial
 numpy
 pillow
+tensorflow
+h5py

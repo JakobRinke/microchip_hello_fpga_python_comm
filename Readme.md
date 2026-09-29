@@ -53,9 +53,9 @@ The example libary ```cnn_com_functions.py``` uses the ```FpgaLink``` and implem
 
 ```python
 run_power_measurement_for_image(
-    fpga_link:
+    fpga_link,
     image_array,
-    runs_per_inference:,
+    runs_per_inference,
     power_measurements_per_inference,
     oversampling_size,
     oversampling_delay_range,

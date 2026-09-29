@@ -62,9 +62,11 @@ run_power_measurement_for_image(
     before_measurement_delay
 )
 ```
+
 -> Does a full power measurement for an image.
-```runs_per_infernce```: The n -> send to the start_run_n_times function gets. The number of back to back runs.
-```power_measurements_per_inference```: The amount of power measurements that are done for one entire inference
-```oversampling_size```: The amount of measurements repeated for one image (set to 1 if you don't want to oversample)
-```oversampling_delay_range```: The range in which the wait for the oversampling is done (set to 0 is you don't want to oversample)
-```before_measurement_delay```: Delay before starting the measurement -> Let the FPGA Power get 
+
+- ```runs_per_infernce```: The n -> send to the start_run_n_times function gets. The number of back to back runs.
+- ```power_measurements_per_inference```: The amount of power measurements that are done for one entire inference
+- ```oversampling_size```: The amount of measurements repeated for one image (set to 1 if you don't want to oversample)
+- ```oversampling_delay_range```: The range in which the wait for the oversampling is done (set to 0 is you don't want to oversample)
+- ```before_measurement_delay```: Delay before starting the measurement -> Let the FPGA Power get 

@@ -9,8 +9,9 @@ It contains the ```FpgaLink``` Class and the ```find_and_connect_to_fpga()``` fu
 The ```find_and_connect_to_fpga()``` returns a ```FpgaLink``` Object of the currently connected Hello FPGA.
 If you get your ```FpgaLink```like that, you do **NOT** have to call ```fpga_link.connect()```
 
->> PLEASE REMEMBER TO UNPLUG AND REPLUG THE FPGA AFTER EVERY CONNECT - IT WON'T WORK WITHOUT A RESET
+>> **PLEASE REMEMBER TO UNPLUG AND REPLUG THE FPGA AFTER EVERY CONNECT - IT WON'T WORK WITHOUT A RESET**
 
+### Communication Modes
 The Hello FPGA has two communication modes:
 - PIC32 Mode: Talk to the static Pic32 controller -> Mainly to used measure power
 - M3 / FPGA Mode: Talk to your custom program on the M3 / FPGA via the UART Bridge

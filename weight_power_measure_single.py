@@ -7,7 +7,7 @@ SEND_WEIGHT_CMD = "w"
 GOT_WEIGHT_BYTE_ACK = "o"
 LOADED_IMAGE_ACK = "l"
 
-OUTPUT_FILE_NAME = "results/single_dense_power_prune_1/weights_{idx}.json"
+OUTPUT_FILE_NAME = "results/single_dense_power_prune_2/weights_{idx}.json"
 if not os.path.exists("/".join(OUTPUT_FILE_NAME.split("/")[:-1])):
     os.makedirs("/".join(OUTPUT_FILE_NAME.split("/")[:-1]), exist_ok=True)
 
@@ -67,7 +67,7 @@ def process_const_weights(fpga_link: FpgaLink, weight_value: int):
 
 
 
-NUM_OF_CHECKS_PER_IMG = 2
+NUM_OF_CHECKS_PER_IMG = 5
 
 WEIGHTS_TO_TEST = [
     0,  # All weights are zero

@@ -393,6 +393,54 @@ class FpgaLink:
         return self.read_raw_until_idle(idle_gap=idle_gap, overall_timeout=overall_timeout)
 
 
+    def await_ack(self, expected_ack: str, silently=False, timeout: float = None):
+        """ Waits for the expected ACK from the M3 core. If silently is True, unexpected responses are not printed. If timeout is set, it will return False if the expected ACK is not received within the timeout period. """
+        if len(expected_ack) != 1:
+            raise ValueError("Expected ACK must be a single character.")
+        resp = ""
+        exp_byte = ord(expected_ack)
+        start = time.time()
+        while resp == "" or resp is None:
+            if timeout is not None and time.time() - start > timeout:
+                print("Timeout while waiting for ACK: expected '{} / 0x{:02X}', but got nothing.".format(chr(exp_byte), exp_byte))
+                return False
+            resp = self.read_next_byte_from_m3()
+            if resp != exp_byte and resp != "" and resp is not None:
+                if not silently:
+                    print("Unexpected response from FPGA: {}, hex: 0x{:02X}, ascii: {}".format(resp, resp, chr(resp)))
+                resp = ""
+
+    def await_ack_with_power_measure(self, expected_ack: str, drop_last=True):
+        """
+        Waits for the expected ACK from the M3 core, while measuring power consumption in the background. Returns a list of power measurements taken during the wait. If drop_last is True, the last measurement (which may be after receiving the ACK) is dropped from the returned list.
+        """
+        if len(expected_ack) != 1:
+            raise ValueError("Expected ACK must be a single character.")
+        exp_byte = ord(expected_ack)
+        resp = ""
+        power_measurements = []
+        while resp == "" or resp is None:
+            p = self.get_current_power()
+            power_measurements.append(p)
+            resp = self.read_next_byte_from_m3()
+            if resp != exp_byte and resp != "" and resp is not None:
+                print("Unexpected response from FPGA: {}, hex: 0x{:02X}, ascii: {}".format(resp, resp, chr(resp)))
+                resp = ""
+        if drop_last:
+            power_measurements = power_measurements[:-1]
+        return power_measurements
+
+def find_and_connect_to_fpga():
+    port = find_mcp2221_port()
+    if port is None:
+        print("MCP2221 not found")
+        exit(1)
+    print("Found MCP2221 on port {}".format(port))
+    print("Connecting to FPGA")
+    fpga_link = FpgaLink(port)
+    fpga_link.connect()
+    print("Connected to FPGA")
+    return fpga_link
 
 if __name__ == "__main__":
     # Example usage of HelloFpgaDriver

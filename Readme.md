@@ -44,7 +44,7 @@ To read the current power from the pic32, no matter which mode you are in use:
 
 
 ## CNN Com
-The example libary ```cnn_com_functions.py``` uses the ```FpgaLink``` and implements useful helper functions to test our CNN Accelerator
+The example libary ```cnn_com_functions.py``` uses the ```FpgaLink``` and implements useful helper functions to test a CNN Accelerator
 
 - ```search_and_connect_to_fpga_and_init_m3()``` -> Searches and connects to the FPGA and goes trough init sequence with the m3, returns ```FpgaLink```
 - ```send_image_array(fpga_link, image_array)``` -> Sends an 2d image array of 8bit ints to the m3
